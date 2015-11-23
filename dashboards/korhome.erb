@@ -1,0 +1,70 @@
+<script type='text/javascript'>
+$(function() {
+  // These settings override the defaults set in application.coffee. You can do this on a per dashboard basis.
+  Dashing.gridsterLayout('[{"col":1,"row":3,"size_x":1,"size_y":1},{"col":1,"row":2,"size_x":1,"size_y":1},{"col":4,"row":1,"size_x":1,"size_y":1},{"col":2,"row":1,"size_x":1,"size_y":1},{"col":3,"row":2,"size_x":1,"size_y":1},{"col":6,"row":1,"size_x":1,"size_y":1},{"col":3,"row":1,"size_x":1,"size_y":1},{"col":1,"row":1,"size_x":1,"size_y":1},{"col":3,"row":3,"size_x":1,"size_y":1}]')
+  Dashing.gridsterLayout('[{"col":1,"row":3,"size_x":1,"size_y":1},{"col":1,"row":2,"size_x":1,"size_y":1},{"col":2,"row":1,"size_x":1,"size_y":1},{"col":4,"row":1,"size_x":1,"size_y":1},{"col":3,"row":2,"size_x":1,"size_y":1},{"col":6,"row":1,"size_x":1,"size_y":1},{"col":3,"row":1,"size_x":1,"size_y":1},{"col":1,"row":1,"size_x":1,"size_y":1},{"col":3,"row":4,"size_x":1,"size_y":1}]')
+  Dashing.widget_base_dimensions = [170, 170]
+  Dashing.numColumns = 6
+});
+</script>
+<div class="gridster">
+  <ul>
+    <% (1..8).each do |index| %>
+    <li data-row="1" data-col="1" data-sizex="1" data-sizey="1">
+      <div data-id="korhome-light-<%=index%>" data-view="Korhome"></div>
+    </li>
+    <% end %>
+    <li data-row="1" data-col="1" data-sizex="1" data-sizey="1">
+      <div data-id="korhome-control" data-view="Text" data-title="Control example"></div>
+    </li>
+  </ul>
+  <ul>
+  </ul>
+</div>
+
+<script type='text/javascript'>
+$(function() {
+setTimeout(function() {
+  $('li .widget-korhome .on').click(function() {
+   id=$(this).parent().parent().parent().parent().parent().children('input').val();
+   $.ajax({
+     type: "POST",
+     url: "http://192.168.1.159:3000/light/"+id+"/on",
+     data: {},
+     success: function(info) {console.dir(info);},
+     error: function(info) {console.dir(info);},
+   });
+  });
+  $('li .widget-korhome .off').click(function() {
+   id=$(this).parent().parent().parent().parent().parent().children('input').val();
+   $.ajax({
+     type: "POST",
+     url: "http://192.168.1.159:3000/light/"+id+"/off",
+     data: {},
+     success: function(info) {console.dir(info);},
+     error: function(info) {console.dir(info);},
+   });
+  });
+  $('li .widget-korhome .dimmer').click(function() {
+   id=$(this).parent().parent().parent().parent().parent().attr("data-id").split("-").pop();
+   $.ajax({
+     type: "POST",
+     url: "http://192.168.1.159:3000/light/"+id+"/dim",
+     data: {},
+     success: function(info) {console.dir(info);},
+     error: function(info) {console.dir(info);},
+   });
+  });
+  $('li .widget-korhome .brighter').click(function() {
+   id=$(this).parent().parent().parent().parent().parent().attr("data-id").split("-").pop();
+   $.ajax({
+     type: "POST",
+     url: "http://192.168.1.159:3000/light/"+id+"/bright",
+     data: {},
+     success: function(info) {console.dir(info);},
+     error: function(info) {console.dir(info);},
+   });
+  });
+},5000);
+});
+</script>
